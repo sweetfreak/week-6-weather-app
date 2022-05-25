@@ -4,16 +4,67 @@ var todayBoxEl = document.querySelector("#today-forecast");
 var fiveDayBoxEl = document.querySelector("#five-day-forecast");
 var citySearchFormEl = document.querySelector("#city-search-box");
 var submitButtonEl = document.querySelector("#submit-button")
+var cityInputEl = document.querySelector("#city-name");
 
+var pastCityArr = [];
 //var thisLat = null;
 //var thisLon = null;
 
 // 1) need to get repo
 // 2) Need to enter info in:
+var loadPastCityButtons = function() {
+    //checks if there's anything in local storage
+    if (localStorage.getItem('pastCityArr') != null){
+        //adds local storage to array
+        var stringOfArray = localStorage.getItem("pastCityArr");
+        console.log(stringOfArray);
+        pastCityArr = JSON.parse(stringOfArray);   
 
+        for (var i=0; i<pastCityArr.length;i++){
+            createPastSearchButton(pastCityArr[i]);
+            console.log(pastCityArr);
+        }
+    } 
+}
+
+var saveFunction = function() {
+    //save
+    var newArray = JSON.stringify(pastCityArr);
+    (localStorage.setItem("pastCityArr", newArray));
+    }
+
+var formSubmitCity = function(event) {
+    event.preventDefault();
+    var cityName = cityInputEl.value.trim();
+    
+
+    if (cityName) {
+        getCityLatLon(cityName);
+        createPastSearchButton(cityName);
+        pastCityArr.push(cityName);
+        console.log(pastCityArr);
+        saveFunction();
+        cityInputEl.textContent = "";
+        cityInputEl.value = ""
+    } else {
+        alert("Please enter a Github username");
+    }
+}
+
+var createPastSearchButton = function(city) {
+    var cityButtonEl = document.createElement("button");
+    cityButtonEl.textContent = city;
+    pastSearchBoxEl.appendChild(cityButtonEl);
+
+   cityButtonEl.addEventListener("click", function() {
+    getCityLatLon(city);
+   });
+}
 
 var getCityLatLon = function (city) {
     var locationApiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=a149e2710325b95921f8e4aacd82ed4d";
+    todayBoxEl.textContent = "";
+    fiveDayBoxEl.textContent = "";
     //optional to exclude a part: &exclude={part}
     fetch(locationApiURL).then(function(response) {
         //if request was successful:
@@ -70,13 +121,14 @@ var calculateDate = function(timestamp) {
 
 var displayToday = function (city, date, iconCode, temp, wind, humidity, UVindex) {
     //city and date [no picture as of yet]
+    var todayTextEl = document.createElement("h1");
     var cityAndDateEl = document.createElement("h2");
     var forecastIconEl = document.createElement("img");
     var iconURL = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png"
     //NEEDS TO GET THE icon CODE
     forecastIconEl.setAttribute("src", iconURL);
 
-
+    todayTextEl.textContent="Today:";
     cityAndDateEl.textContent = city + " on " + date;
     //display next few areas
     var tempEl = document.createElement("p");
@@ -98,7 +150,7 @@ var displayToday = function (city, date, iconCode, temp, wind, humidity, UVindex
 
     }
 
-
+    todayBoxEl.append(todayTextEl);
     todayBoxEl.appendChild(cityAndDateEl);
     cityAndDateEl.appendChild(forecastIconEl);
     todayBoxEl.appendChild(tempEl);
@@ -135,16 +187,8 @@ var displayFiveDay = function (date, iconCode, temp, wind, humidity) {
 }
 
 
-var displayWeather = function () {
-    //get info from input
-        getCityLatLon("New York City");
-    }
-//click button
-
-displayWeather();
-
 
 
 //when a button is clicked, it fetches data, and displays the current weather and the next 5 days. Then create a button of the most recent input
-
-submitButtonEl.addEventListener("click", displayWeather);
+loadPastCityButtons();
+submitButtonEl.addEventListener("click", formSubmitCity);
