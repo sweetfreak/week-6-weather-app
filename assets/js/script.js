@@ -6,7 +6,7 @@ var citySearchFormEl = document.querySelector("#city-search-box");
 var submitButtonEl = document.querySelector("#submit-button")
 var cityInputEl = document.querySelector("#city-name");
 
-var pastCityArr = [];
+var pastCityArr = []
 //var thisLat = null;
 //var thisLon = null;
 
@@ -62,7 +62,7 @@ var createPastSearchButton = function(city) {
 }
 
 var getCityLatLon = function (city) {
-    var locationApiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=a149e2710325b95921f8e4aacd82ed4d";
+    var locationApiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=a149e2710325b95921f8e4aacd82ed4d";
     todayBoxEl.textContent = "";
     fiveDayBoxEl.textContent = "";
     //optional to exclude a part: &exclude={part}
@@ -124,7 +124,7 @@ var displayToday = function (city, date, iconCode, temp, wind, humidity, UVindex
     var todayTextEl = document.createElement("h1");
     var cityAndDateEl = document.createElement("h2");
     var forecastIconEl = document.createElement("img");
-    var iconURL = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png"
+    var iconURL = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png"
     //NEEDS TO GET THE icon CODE
     forecastIconEl.setAttribute("src", iconURL);
 
@@ -164,7 +164,7 @@ var displayFiveDay = function (date, iconCode, temp, wind, humidity) {
     
     var dateEl = document.createElement("h3");
     var forecastIconEl = document.createElement("img");
-    var iconURL = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png"
+    var iconURL = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png"
     //NEEDS TO GET THE icon CODE
     forecastIconEl.setAttribute("src", iconURL);
 
