@@ -1,0 +1,43 @@
+* {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+header {
+    background-image: linear-gradient(180deg, #2336ff 0%, #ae00ff 100%);
+    color: white;
+    text-align: center;
+}
+
+main {
+    flex: auto;
+    flex-wrap: wrap;
+}
+
+#search-box {
+    border: 5px solid black;
+}
+
+#today-forecast {
+    border: 5px solid black;
+}
+
+#five-day-forecast {
+    border: 5px solid black;
+
+}
+
+#favorable span {
+    background-color: green;
+    color: white
+}
+
+#moderate span {
+    background-color: yellow;
+    color: white;
+}
+
+#severe span {
+    background-color: red;
+    color: white
+}
