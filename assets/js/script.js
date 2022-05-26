@@ -6,7 +6,7 @@ var citySearchFormEl = document.querySelector("#city-search-box");
 var submitButtonEl = document.querySelector("#submit-button")
 var cityInputEl = document.querySelector("#city-name");
 
-var pastCityArr = []
+var pastCityArr = [];
 //var thisLat = null;
 //var thisLon = null;
 
@@ -36,7 +36,7 @@ var saveFunction = function() {
 var formSubmitCity = function(event) {
     event.preventDefault();
     var cityName = cityInputEl.value.trim();
-    
+   // var cityExists = getCityLatLon(cityName);
 
     if (cityName) {
         getCityLatLon(cityName);
@@ -47,7 +47,7 @@ var formSubmitCity = function(event) {
         cityInputEl.textContent = "";
         cityInputEl.value = ""
     } else {
-        alert("Please enter a Github username");
+        alert("Please check your spelling and try again.");
     }
 }
 
@@ -74,13 +74,13 @@ var getCityLatLon = function (city) {
                 var thisLat = data[0].lat;
                 var thisLon = data[0].lon;
                 var thisCity = data[0].name
-                getTodayForecast(thisLat, thisLon, thisCity);
-                
-        })}
-        else {
-            //direct to homepage if not successful or display alert?
-          //  document.location.replace("./index.html");
-        }
+                getTodayForecast(thisLat, thisLon, thisCity);  
+        }).catch(function(err) {
+            pastCityArr.splice(-1,1);
+            saveFunction();
+            alert("Could not find city. Please check spelling");}
+        
+    )}
     });         
 }
 
@@ -161,7 +161,8 @@ var displayToday = function (city, date, iconCode, temp, wind, humidity, UVindex
 }
 
 var displayFiveDay = function (date, iconCode, temp, wind, humidity) {
-    
+    var dayBoxEl = document.createElement("div");
+    dayBoxEl.setAttribute("id", "day-box");
     var dateEl = document.createElement("h3");
     var forecastIconEl = document.createElement("img");
     var iconURL = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png"
@@ -178,11 +179,12 @@ var displayFiveDay = function (date, iconCode, temp, wind, humidity) {
     var humidEl = document.createElement("p");
     humidEl.textContent = "Humidity: " + humidity + " %";
 
-    fiveDayBoxEl.appendChild(dateEl);
+    dayBoxEl.appendChild(dateEl);
     dateEl.appendChild(forecastIconEl);
-    fiveDayBoxEl.appendChild(tempEl);
-    fiveDayBoxEl.appendChild(windEl);
-    fiveDayBoxEl.appendChild(humidEl);
+    dayBoxEl.appendChild(tempEl);
+    dayBoxEl.appendChild(windEl);
+    dayBoxEl.appendChild(humidEl);
+    fiveDayBoxEl.appendChild(dayBoxEl);
 
 }
 

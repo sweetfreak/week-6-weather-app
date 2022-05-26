@@ -34,10 +34,15 @@ main {
 
 #moderate span {
     background-color: yellow;
-    color: white;
+    color: black;
 }
 
 #severe span {
     background-color: red;
     color: white
+}
+
+#day-box {
+    border: 3px solid blue;
+    
 }
